@@ -1,58 +1,32 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Stage } from "@react-three/drei";
 import type { Mesh } from "three";
 import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { ER }from './Endoplasmic_reticulum.jsx'
+import  Display_Organelle  from './Display_Organelle'
 interface SceneProps {
-    color: string;
-    hoverColor: string;
+   modelType: string
 }
 
-interface BoxProps {
-    color: string;
-    hoverColor: string;
-}
-
-const Box = (props: BoxProps) => {
-    let color = props.color;
-    let hoverColor = props.hoverColor;
-    // This reference will give us direct access to the mesh
-    const mesh = useRef<Mesh>();
-
-    // Set up state for the hovered and active state
-    const [hovered, setHover] = useState(false);
-    const [active, setActive] = useState(false);
-
-    // Rotate mesh every frame, this is outside of React without overhead
-    useFrame(() => {
-        if (mesh.current)
-            mesh.current.rotation.y = mesh.current.rotation.y += 0.01;
-    });
-
-    return (
-        <mesh
-            ref={mesh}
-            scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
-            onClick={(event) => setActive(!active)}
-            onPointerOver={(event) => setHover(true)}
-            onPointerOut={(event) => setHover(false)}
-        >
-            <boxBufferGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial color={hovered ? hoverColor : color} />
-        </mesh>
-    );
-};
 
 
 function Scene(props: SceneProps) {
     return (
         <>
-            <ambientLight />
-            <pointLight position={[10, 10, 10]} />
-            <ER />
-            <OrbitControls />
+            <color attach="background" args={['skyblue']} />
+            <Stage
+                intensity={0.5}
+                preset="rembrandt"
+                shadows={{ type: 'accumulative', color: 'skyblue', colorBlend: 2, opacity: 1 }}
+                adjustCamera={1}
+                environment="city">
+                <ambientLight />
+                <pointLight position={[10, 10, 10]} />
+            
+                <Display_Organelle  modelType={props.modelType} />
+                <OrbitControls />
+            </Stage>
         </>
     );
 }

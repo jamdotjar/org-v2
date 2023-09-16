@@ -61,7 +61,7 @@ function CanvasLayout({ children }: CanvasLayoutProps) {
 
     return (
         <>
-            <StyledCanvas
+            <StyledCanvas shadows
                 style={{ 
                     width: sizes.width, 
                     height: sizes.height,
@@ -69,7 +69,7 @@ function CanvasLayout({ children }: CanvasLayoutProps) {
                 }}
                 // pixelRatio={pixelRatio}
                 camera={{
-                    position: [0, 0, 3],
+                    position: [0, 7, 10],
                     aspect: aspectRatio,
                     near: 0.1,
                     far: 100,
@@ -77,7 +77,7 @@ function CanvasLayout({ children }: CanvasLayoutProps) {
             >
                 {children}
                
-                <Perf position={"bottom-right"} />
+               
             </StyledCanvas>
         </>
     );
