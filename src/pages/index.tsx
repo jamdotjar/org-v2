@@ -6,6 +6,7 @@ import GlobalStyles from "../components/GlobalStyles";
 import Sidebar from "../components/layout/Sidebar";
 
 export default function Home() {
+    
     const { model } = useControls({
         model: {value:"Endoplasmic-reticulum", options: ["Endoplasmic-reticulum", "Nucleus", "Golgi", "Mitochondria"]}
     });
@@ -13,7 +14,7 @@ export default function Home() {
     return (
         <>
             <Sidebar/>
-            //button here 
+
             <Layout title={"First"}>
                 <CanvasLayout>
                     <Scene modelType={model} />
