@@ -5,11 +5,11 @@ import type { Mesh } from "three";
 import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import  Display_Organelle  from './Display_Organelle'
+
+
 interface SceneProps {
    modelType: string
 }
-
-
 
 function Scene(props: SceneProps) {
     return (

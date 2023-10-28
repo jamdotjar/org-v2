@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 
-export default function Sidebar() {
-    const [currentBlock, setCurrentBlock] = useState(0);
+export default function Sidebar({ modelType, setModelType, modelOptions }) {
+    const [currentBlock, setCurrentBlock] = useState(modelOptions.indexOf(modelType));
     const [isMinimized, setIsMinimized] = useState(false);
 
+    useEffect(() => {
+        setCurrentBlock(modelOptions.indexOf(modelType));
+    }, [modelType]);
     const blocksOfText = [
-        'The nucleus controls and regulates cell activities. It is here that the DNA from the chromosome is transcribed into RNA, specifically messenger RNA (mRNA), which carries the genetic instructions for protein synthesis. ',
-        'Another block of text',
-        'Yet another block of text',
+        { type: 'Endoplasmic-reticulum', text: 'Text for Endoplasmic-reticulum' },
+        { type: 'Nucleus', text: 'Text for Nucleus' },
+        { type: 'Golgi', text: 'Text for Golgi' },
+        { type: 'Mitochondria', text: 'Text for Mitochondria' },
     ];
+
+    const initialBlockIndex = blocksOfText.findIndex(block => block.type === modelType);
+
+    useEffect(() => {
+        const blockIndex = blocksOfText.findIndex(block => block.type === modelType);
+        setCurrentBlock(blockIndex);
+    }, [modelType]);
+
 
     const sidebarStyle = {
         position: 'fixed',
@@ -64,21 +76,28 @@ export default function Sidebar() {
 
     return (
         <>
-            <div className="sidebar" style={sidebarStyle}>
-                <p style={textStyle}>{blocksOfText[currentBlock]}</p>
-                <div style={buttonStyle}>
-                    <button style={arrowButtonStyle} onClick={() => setCurrentBlock((currentBlock - 1 + blocksOfText.length) % blocksOfText.length)}>
-                        <FontAwesomeIcon icon={faArrowLeft} />
-                    </button>
-                    <button style={arrowButtonStyle} onClick={() => setCurrentBlock((currentBlock + 1) % blocksOfText.length)}>
-                        <FontAwesomeIcon icon={faArrowRight} />
-                    </button>
-                </div>
+        <div className="sidebar" style={sidebarStyle}>
+            <p style={textStyle}>{blocksOfText[currentBlock].text}</p>
+            <div style={buttonStyle}>
+                <button style={arrowButtonStyle} onClick={() => {
+                    const newBlock = (currentBlock - 1 + modelOptions.length) % modelOptions.length;
+                    setCurrentBlock(newBlock);
+                    setModelType(modelOptions[newBlock]);
+                }}>
+                    <FontAwesomeIcon icon={faArrowLeft} />
+                </button>
+                <button style={arrowButtonStyle} onClick={() => {
+                    const newBlock = (currentBlock + 1) % modelOptions.length;
+                    setCurrentBlock(newBlock);
+                    setModelType(modelOptions[newBlock]);
+                }}>
+                    <FontAwesomeIcon icon={faArrowRight} />
+                </button>
             </div>
-            <button style={minimizeButtonStyle} onClick={() => setIsMinimized(!isMinimized)}>
-                <FontAwesomeIcon icon={isMinimized ? faPlus : faMinus} />
-                
-            </button>
-        </>
+        </div>
+        <button style={minimizeButtonStyle} onClick={() => setIsMinimized(!isMinimized)}>
+            <FontAwesomeIcon icon={isMinimized ? faPlus : faMinus} />
+        </button>
+    </>
     );
 }
