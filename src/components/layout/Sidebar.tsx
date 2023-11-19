@@ -1,36 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { modelConfig } from '../modelManager';
 
-export default function Sidebar({ modelType, setModelType, modelOptions }) {
+interface SidebarProps {
+    modelType: string;
+    setModelType: (modelType: string) => void;
+    modelOptions: string[];
+}
+
+export default function Sidebar({ modelType, setModelType, modelOptions }: SidebarProps) {
     const [currentBlock, setCurrentBlock] = useState(modelOptions.indexOf(modelType));
     const [isMinimized, setIsMinimized] = useState(false);
 
     useEffect(() => {
         setCurrentBlock(modelOptions.indexOf(modelType));
     }, [modelType]);
-    const blocksOfText = [
-        { type: 'Endoplasmic-reticulum', text: 'Text for Endoplasmic-reticulum' },
-        { type: 'Nucleus', text: 'Text for Nucleus' },
-        { type: 'Golgi', text: 'Text for Golgi' },
-        { type: 'Mitochondria', text: 'Text for Mitochondria' },
-    ];
 
-    const initialBlockIndex = blocksOfText.findIndex(block => block.type === modelType);
+    const currentText = modelConfig[modelType as keyof typeof modelConfig].text;
 
-    useEffect(() => {
-        const blockIndex = blocksOfText.findIndex(block => block.type === modelType);
-        setCurrentBlock(blockIndex);
-    }, [modelType]);
-
-
-    const sidebarStyle = {
+    const sidebarStyle: React.CSSProperties = {
         position: 'fixed',
         top: 0,
         left:  isMinimized ? '-50px' : '0px',
         width: isMinimized ? '50px' : '300px',
-        height: '100%',
+        height: 'calc(100%-1rem)',
         backgroundColor: '#f5f5f5',
+        borderRadius: '1rem',
+        margin: '1rem 0rem 1rem 1rem',
         overflow: 'auto',
         zIndex: 1000,
         padding: '20px',
@@ -57,11 +54,12 @@ export default function Sidebar({ modelType, setModelType, modelOptions }) {
         background: 'none',
         fontSize: '1.5em',
         cursor: 'pointer',
+        opacity: isMinimized ? 0 : 1,
+        transition: 'opacity 0.3s ease-in-out',
     };
 
-    const minimizeButtonStyle = {
+    const minimizeButtonStyle: React.CSSProperties =  {
         position: 'fixed',
-        //make the button rotate 90 degrees when minimizingleft: isMinimized ? '20px' : '320px',
         top: '10px',
         border: 'none',
         background: 'none',
@@ -71,13 +69,14 @@ export default function Sidebar({ modelType, setModelType, modelOptions }) {
         zIndex: 1001,
         transform: isMinimized ? 'rotate(-90deg)' : 'rotate(0deg)',
         left: isMinimized ? '20px' : '320px',
-
     };
 
     return (
         <>
         <div className="sidebar" style={sidebarStyle}>
-            <p style={textStyle}>{blocksOfText[currentBlock].text}</p>
+        <p style={textStyle}>
+  {currentText}
+</p>
             <div style={buttonStyle}>
                 <button style={arrowButtonStyle} onClick={() => {
                     const newBlock = (currentBlock - 1 + modelOptions.length) % modelOptions.length;

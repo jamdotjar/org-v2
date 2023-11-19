@@ -10,7 +10,7 @@ Title: Lysosome
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
-export function Model(props) {
+export function Lysosome(props) {
   const { nodes, materials } = useGLTF('/lysosome-transformed.glb')
   return (
     <group {...props} dispose={null}>

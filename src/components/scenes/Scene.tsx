@@ -6,12 +6,13 @@ import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import  Display_Organelle  from './Display_Organelle'
 
-
 interface SceneProps {
-   modelType: string
-}
+    modelType: string;
+  }
+  
 
-function Scene(props: SceneProps) {
+
+function Scene({ modelType }: SceneProps) {
     return (
         <>
             <color attach="background" args={['skyblue']} />
@@ -24,7 +25,7 @@ function Scene(props: SceneProps) {
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
             
-                <Display_Organelle  modelType={props.modelType} />
+                <Display_Organelle modelType={modelType} />
                 <OrbitControls />
             </Stage>
         </>

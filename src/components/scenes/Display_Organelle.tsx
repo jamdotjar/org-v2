@@ -1,34 +1,15 @@
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
-import { ER } from './org/Endoplasmic_reticulum.jsx'
-import { Nucleus } from './org/Cosmic_cell.jsx'
-import { Golgi } from './org/Golgi_apparatuscomplex.jsx'
-import  { Mitochondria } from './org/Mitochondria.jsx'
-interface Props {
-    modelType: 'Endoplasmic-reticulum' | 'Nucleus' | 'Golgi'| 'Mitochondria';
-  }
-  
+import { ER } from '../models/Endoplasmic_reticulum.jsx'
+import { Nucleus } from '../models/Cosmic_cell.jsx'
+import { Golgi } from '../models/Golgi_apparatuscomplex.jsx'
+import  { Mitochondria } from '../models/Mitochondria.jsx'
+import { Lysosome } from '../models/Lysosome.jsx'
+import { Ribosome } from '../models/Ribosome.jsx'
+import { modelConfig } from '../modelManager';
 
-export default function Display_Organelle({ modelType }: Props) {
-  let ModelToRender;
-
-  switch(modelType) {
-    case 'Endoplasmic-reticulum':
-      ModelToRender = ER;
-      break;
-    case 'Nucleus':
-      ModelToRender = Nucleus;
-      break;
-    case 'Golgi':
-      ModelToRender = Golgi;
-      break;
-    case 'Mitochondria':
-      ModelToRender = Mitochondria;
-      break;
-    default:
-      ModelToRender = null;
-  }
-
+export default function Display_Organelle({ modelType }: { modelType: string }) {
+  const ModelToRender = modelConfig[modelType as keyof typeof modelConfig].component;
   return (
     <>
         {ModelToRender && <ModelToRender />}
